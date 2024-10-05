@@ -1,11 +1,12 @@
+#criar sistema bancário p
 saldo = 0
 extrato = ""
 numero_de_saques = 0
 valor_limite = 500
 deposito = 0
 LIMITE_SAQUES = 3
-EXTRATO_MENSAGEM = "EXTRATO"
-ESPACO = ""
+extrato_mensagem = "EXTRATO"
+espaco = ""
 
 menu = """
  ------------------------
@@ -18,10 +19,10 @@ menu = """
 """
 
 def visualizar_extrato():
-    print(EXTRATO_MENSAGEM.center(40, "="))
+    print(extrato_mensagem.center(40, "="))
     print ("Não foram relizadas movimentações" if not extrato else extrato)
-    print (f"\nSaldo:    R$ {saldo.center:.2f(40)}")
-    print (ESPACO.center(40, "="))
+    print (f"\nSaldo:    R$ {saldo:.2f}")
+    print (espaco.center(40, "="))
 
 def realizar_saque():
     global extrato, saldo, numero_de_saques
