@@ -62,7 +62,7 @@ deposito_funcoes = {
     'print_deposito': lambda deposito: print(f"Depósito de R${deposito:.2f} realizado com sucesso!\n") if deposito > 0 else print("Valor inválido"),
     'pega_deposito':lambda deposito: deposito,
     'atualiza_saldo':lambda deposito: saldo + deposito,
-    'add_extrato':lambda deposito: f"Depósito:\tR${deposito:.2f}\n"} #adição de funções por dicionário 
+    'add_extrato':lambda deposito: f"Depósito:\tR${deposito:.2f}\n"}
 
 def filtra_usuario(cpf, usuarios):
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
@@ -82,7 +82,7 @@ def endereco_func():
     cidade = input("Cidade: ")
     sigla_estado = input("Sigla do estado: ")
     global endereco
-    endereco = (f"Endereço completo: {logradouro}, {nro} - {bairro} - {cidade}/{sigla_estado}")
+    endereco = f"{logradouro},  {nro} - {bairro} - {cidade}/{sigla_estado}"
     
 #TODO incluir verificação de CPF
 def cria_usuario(usuarios):
@@ -110,6 +110,7 @@ def cria_usuario(usuarios):
     nome = p_nome + " " + sobrenome
     data_func() 
     endereco_func()
+
    
     usuarios.append({'nome': nome, 'data_nascimento': data_nascimento, 'cpf': cpf, 'endereco': endereco})
     print(usuarios)
