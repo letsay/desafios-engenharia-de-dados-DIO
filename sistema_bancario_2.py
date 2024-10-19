@@ -1,4 +1,6 @@
 #criar sistema bancário p
+from datetime import date, datetime, time
+
 saldo = 0
 extrato = ""
 numero_de_saques = 0
@@ -11,6 +13,10 @@ espaco = ""
 usuarios = []
 contas = []
 numero_conta = 1
+ano = 1
+mes = 1
+dia = 1
+mascara_ptbr = "%d/%m/%Y"
 
 menu = """
  --------------------------
@@ -25,7 +31,6 @@ menu = """
  --------------------------
 """
 def visualizar_extrato(saldo, /, *, extrato):
-    #usuario_cpf = input("Insira seu CPF: ") eu n sei to com sono
     print(extrato_mensagem.center(40, "="))
     print("Não foram relizadas movimentações" if not extrato else extrato)
     print (f"\nSaldo:\t\tR${saldo:.2f}")
@@ -59,12 +64,27 @@ deposito_funcoes = {
     'atualiza_saldo':lambda deposito: saldo + deposito,
     'add_extrato':lambda deposito: f"Depósito:\tR${deposito:.2f}\n"} #adição de funções por dicionário 
 
-#função para criar usuário e ver se ele já existe
-
 def filtra_usuario(cpf, usuarios):
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
     return usuarios_filtrados[0] if usuarios_filtrados else None
 
+def data_func():
+    ano = int(input("insira o ano de nascimento: "))
+    mes = int(input("insira o mês de nascimento: "))
+    dia = int(input("insira o dia do seu nascimento: "))
+    global data_nascimento 
+    data_nascimento = date(ano, mes, dia).strftime(mascara_ptbr)
+
+def endereco_func():
+    logradouro = input("Logradouro: ")
+    nro = int(input("Número: "))
+    bairro = input("Bairro: ")
+    cidade = input("Cidade: ")
+    sigla_estado = input("Sigla do estado: ")
+    global endereco
+    endereco = (f"Endereço completo: {logradouro}, {nro} - {bairro} - {cidade}/{sigla_estado}")
+    
+#TODO incluir verificação de CPF
 def cria_usuario(usuarios):
     cpf = input("Insira seu CPF (somente números): ")
     usuario = filtra_usuario(cpf, usuarios)
@@ -73,18 +93,30 @@ def cria_usuario(usuarios):
         print("Já existe usuário com esse CPF")
         return
     
-    nome = input("Nome completo: ")
-    data_nascimento = input("Data de nascimento(dd-mm-aaaa): ")
-    endereco = input("Endereço completo(logradouro, nro - bairro - cidade/sigla do estado):")
+    while True:
+        p_nome = input("Nome: ")
+        if all(caractere.isalpha() for caractere in p_nome):
+            break
+        else:
+            print('Digite somente o primeiro nome.')
 
+    while True:
+        sobrenome = input("Sobrenome: ")
+        if all(caractere.isalpha() for caractere in sobrenome):
+            break
+        else:
+            print('Digite somente o sobrenome.')
+
+    nome = p_nome + " " + sobrenome
+    data_func() 
+    endereco_func()
+   
     usuarios.append({'nome': nome, 'data_nascimento': data_nascimento, 'cpf': cpf, 'endereco': endereco})
-
+    print(usuarios)
     print("Usuário criado com sucesso!")
 
-#função para criar conta para usuários existentes e criar um vínculo usuario-conta
-#def cria_e_vincula_conta():
-
-def criar_conta(agencia, numero_conta, usuarios):
+#TODO fazer com que o input de cpf aceito seja só de inteiros nome: limpa_cpf talvez
+def criar_conta(AGENCIA, numero_conta, usuarios):
     cpf = input("Informe o cpf do usuário: ")
     usuario = filtra_usuario(cpf, usuarios)
 
@@ -104,7 +136,6 @@ def listar_contas(contas):
 
         print("=" * 100)
         print(linha)
-
 
 while True:
     print(menu)
@@ -137,5 +168,6 @@ while True:
 
     elif opcao == 7:
         break
+    
     else:
         print("Opção inválida, por favor selecione novamente a opção desejada.")
